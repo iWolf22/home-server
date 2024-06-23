@@ -46,3 +46,21 @@ endif
 " Adds onedark vim colors
 set background=dark
 colorscheme onedark
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+let g:airline_theme='onedark'
+let g:airline_powerline_fonts = 1 
+
+call vundle#end()            " required
+filetype plugin indent on    " required

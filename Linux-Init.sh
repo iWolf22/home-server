@@ -27,3 +27,14 @@ mkdir ./.vim/autoload
 
 curl https://raw.githubusercontent.com/joshdick/onedark.vim/main/colors/onedark.vim > ./.vim/colors/onedark.vim
 curl https://raw.githubusercontent.com/joshdick/onedark.vim/main/autoload/onedark.vim > ./.vim/autoload/onedark.vim
+
+curl https://raw.githubusercontent.com/iWolf22/Linux-Init/main/.vimrc > ./.vimrc
+
+sudo apt install git
+sudo git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+sudo git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline
+sudo git clone https://github.com/vim-airline/vim-airline-themes ~/.vim/bundle/vim-airline-themes
+
+mkdir ./.vim/autoload/airline
+mkdir ./.vim/autoload/airline/themes
+curl https://raw.githubusercontent.com/joshdick/onedark.vim/main/autoload/airline/themes/onedark.vim > ~/.vim/autoload/airline/themes/onedark.vim
