@@ -1,6 +1,6 @@
 # Linux-Init
 
-Initializes linux with a nice posh, vim setup, and neofetch!
+Initializes debian based linux distributions with a nice posh, vim setup, and a fast neofetch!
 
 ```bash
 ██╗░░░░░██╗███╗░░██╗██╗░░░██╗██╗░░██╗░░░░░░██╗███╗░░██╗██╗████████╗
