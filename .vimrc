@@ -47,7 +47,7 @@ endif
 set background=dark
 colorscheme onedark
 
-set nocompatible              " be iMproved, required
+set nocompatible              " required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -56,10 +56,15 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+
+" Adds airline plugins
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
+" Sets airline to the onedark theme
 let g:airline_theme='onedark'
+
+" Adds triangles to the airline
 let g:airline_powerline_fonts = 1 
 
 call vundle#end()            " required
