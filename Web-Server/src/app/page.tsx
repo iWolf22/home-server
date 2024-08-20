@@ -123,30 +123,58 @@ export default function Home() {
                 <div className="line-rl h-16 w-full"></div>
                 <div className="col-span-9 w-full border-[1px] border-dashed border-stone-300 dark:border-stone-700">
                     <Marquee
-                        className="p-8 [--duration:20s]"
+                        className="p-8 [--duration:80s]"
                         pauseOnHover
                         reverse
                     >
                         {[
-                            "css.svg",
-                            "html.svg",
-                            "javascript.svg",
-                            "typescript.svg",
-                            "python.svg",
-                            "java.png",
+                            "linux.png",
+                            "docker.png",
+                            "kubernetes.png",
                             "c.png",
                             "cpp.png",
-                            "bash.png",
+                            "java.png",
+                            "python.png",
+                            "html.png",
+                            "css.png",
+                            "javascript.png",
+                            "typescript.png",
                             "react.png",
                             "redux.png",
+                            "next.png",
+                            "tailwind.png",
+                            "prisma.png",
+                            "node.png",
+                            "express.webp",
+                            "socket-io.png",
+                            "jquery.png",
+                            "flask.png",
+                            "postgresql.png",
+                            "mongodb.png",
+                            "postman.png",
+                            "vscode.png",
+                            "vim.png",
+                            "bash.png",
+                            "git.png",
+                            "material-ui.svg",
+                            "bootstrap.svg",
                         ].map((image, i) => (
-                            <div key={i}>
+                            <div key={i} className="relative h-8 w-12">
                                 <Image
                                     src={"/icons/" + image}
-                                    width={50}
-                                    height={50}
-                                    alt="Picture of the author"
-                                    className="grayscale transition-all duration-150 hover:grayscale-0"
+                                    layout="fill"
+                                    objectFit="contain"
+                                    alt={image}
+                                    className={
+                                        "grayscale transition-all duration-150 hover:grayscale-0 dark:invert dark:hover:invert-0 " +
+                                        ([
+                                            "next.png",
+                                            "express.webp",
+                                            "flask.png",
+                                        ].includes(image)
+                                            ? " !invert"
+                                            : "")
+                                    }
                                 ></Image>
                             </div>
                         ))}
