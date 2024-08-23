@@ -7,15 +7,50 @@ import AnimatedShinyText from "@/components/magicui/animated-shiny-text";
 import Marquee from "@/components/magicui/marquee";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import { Container } from "@mui/material";
+import { Container, Tooltip } from "@mui/material";
 import Image from "next/image";
 
 const divIconsClass =
     "rounded-full md:p-1 py-1 hover:cursor-pointer text-stone-600 transition-all duration-150 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-50";
 
-export default function Home() {
-    const TABS = ["Home", "Work", "Projects", "Blog"];
+const techImages = [
+    { image: "linux.png" },
+    { image: "ubuntu.png", alt: "Ubuntu Server" },
+    { image: "docker.png" },
+    { image: "kubernetes.png" },
+    { image: "c.png" },
+    { image: "cpp.png", alt: "C++" },
+    { image: "java.png" },
+    { image: "python.png" },
+    { image: "html.png", alt: "HTML" },
+    { image: "css.png", alt: "CSS" },
+    { image: "javascript.png", alt: "JavaScript" },
+    { image: "typescript.png", alt: "TypeScript" },
+    { image: "react.png", alt: "ReactJS" },
+    { image: "redux.png" },
+    { image: "next.png", alt: "NextJS" },
+    { image: "tailwind.png", alt: "TailWindCSS" },
+    { image: "prisma.png" },
+    { image: "node.png", alt: "NodeJS" },
+    { image: "express.png", alt: "ExpressJS" },
+    { image: "socket-io.png", alt: "Socket.IO" },
+    { image: "dotenv.png", alt: "Dotenv" },
+    { image: "jquery.png", alt: "jQuery" },
+    { image: "flask.png" },
+    { image: "postgresql.png", alt: "PostgreSQL" },
+    { image: "mongodb.png", alt: "MongoDB" },
+    { image: "postman.png" },
+    { image: "vscode.png", alt: "VS Code" },
+    { image: "vim.png" },
+    { image: "bash.png" },
+    { image: "git.png" },
+    { image: "material-ui.png", alt: "Material UI" },
+    { image: "bootstrap.png" },
+];
 
+const TABS = ["Home", "Work", "Projects", "Blog"];
+
+export default async function Home() {
     return (
         <Container>
             <div className="flex items-start justify-between pt-4 md:pt-8">
@@ -93,12 +128,12 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-11">
+            <div className="mt-6 grid grid-cols-11">
                 <div className="h-16 w-full"></div>
                 <div className="line-bt col-span-3 h-16 w-full"></div>
                 <div className="line-bt col-span-3 h-16 w-full"></div>
                 <div className="line-bt col-span-3 h-16 w-full"></div>
-                <div className="line-bt h-16 w-full"></div>
+                <div className="line-bt relative right-[1px] h-16 w-full"></div>
                 <div className="line-rl h-16 w-full"></div>
                 <div
                     className={
@@ -127,60 +162,57 @@ export default function Home() {
                         pauseOnHover
                         reverse
                     >
-                        {[
-                            "linux.png",
-                            "docker.png",
-                            "kubernetes.png",
-                            "c.png",
-                            "cpp.png",
-                            "java.png",
-                            "python.png",
-                            "html.png",
-                            "css.png",
-                            "javascript.png",
-                            "typescript.png",
-                            "react.png",
-                            "redux.png",
-                            "next.png",
-                            "tailwind.png",
-                            "prisma.png",
-                            "node.png",
-                            "express.webp",
-                            "socket-io.png",
-                            "jquery.png",
-                            "flask.png",
-                            "postgresql.png",
-                            "mongodb.png",
-                            "postman.png",
-                            "vscode.png",
-                            "vim.png",
-                            "bash.png",
-                            "git.png",
-                            "material-ui.svg",
-                            "bootstrap.svg",
-                        ].map((image, i) => (
-                            <div key={i} className="relative h-8 w-12">
-                                <Image
-                                    src={"/icons/" + image}
-                                    layout="fill"
-                                    objectFit="contain"
-                                    alt={image}
-                                    className={
-                                        "grayscale transition-all duration-150 hover:grayscale-0 dark:invert dark:hover:invert-0 " +
-                                        ([
-                                            "next.png",
-                                            "express.webp",
-                                            "flask.png",
-                                        ].includes(image)
-                                            ? " !invert"
-                                            : "")
-                                    }
-                                ></Image>
-                            </div>
-                        ))}
+                        {techImages.map(async ({ image, alt }, i) => {
+                            const imageBlur = await fetch(
+                                "http://localhost:3000//icons/out/" + image
+                            ).then(async (res) => {
+                                return Buffer.from(
+                                    await res.arrayBuffer()
+                                ).toString("base64");
+                            });
+
+                            const altText =
+                                alt ||
+                                image.charAt(0).toUpperCase() +
+                                    image.slice(1).replace(".png", "");
+
+                            return (
+                                <Tooltip
+                                    key={i}
+                                    title={altText}
+                                    placement="top"
+                                    style={{ pointerEvents: "auto" }}
+                                >
+                                    <Image
+                                        src={"/icons/out/" + image}
+                                        width={50}
+                                        height={30}
+                                        alt={altText}
+                                        blurDataURL={`data:image/png;base64,${imageBlur}`}
+                                        className={
+                                            "grayscale transition-all duration-150 hover:grayscale-0 dark:invert dark:hover:invert-0 " +
+                                            ([
+                                                "next.png",
+                                                "express.png",
+                                                "flask.png",
+                                            ].includes(image)
+                                                ? " dark:!invert"
+                                                : "")
+                                        }
+                                    ></Image>
+                                </Tooltip>
+                            );
+                        })}
                     </Marquee>
                 </div>
                 <div className="line-lr h-16 w-full"></div>
+                <div className="line-rl relative bottom-[1px] h-16 w-full"></div>
+                <div className="line-tb col-span-3 h-16"></div>
+                <div className="line-tb col-span-3 h-16"></div>
+                <div className="line-tb col-span-3 h-16"></div>
+                <div className="line-lr relative bottom-[1px] right-[1px] col-span-1 h-16 w-16">
+                    <div className="line-tb h-16"></div>
+                </div>
             </div>
         </Container>
     );
