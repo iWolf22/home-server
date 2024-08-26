@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 
 import ThemeContext from "@/components/custom/ThemeContext";
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
 export const helvetica = localFont({
     src: "./../../public/fonts/HelveticaforTarget-Bold.ttf",
 });
@@ -23,9 +21,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
-                <ThemeContext>{children}</ThemeContext>
-            </body>
+            <ThemeContext>{children}</ThemeContext>
         </html>
     );
 }

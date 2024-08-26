@@ -30,7 +30,7 @@
         "@types/react-dom": "^18",
         "eslint": "^8.57.0",
         "eslint-config-next": "14.2.5",
-        "eslint-plugin-perfectionist": "^2.11.0",
+        "eslint-plugin-perfectionist": "^3.2.0",
         "postcss": "^8",
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.6",

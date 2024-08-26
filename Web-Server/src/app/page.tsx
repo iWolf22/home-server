@@ -1,50 +1,62 @@
 import { helvetica } from "@/app/layout";
 import AnimatedBackground from "@/components/core/animated-background";
 import MagneticGSAP from "@/components/core/gsap";
+import AnimatedBeam from "@/components/custom/AnimationBeam";
+import BezierCurve from "@/components/custom/BezierCurve";
 import DynamicThemeIcon from "@/components/custom/DynamicThemeIcon";
+import Line from "@/components/custom/Line";
 import ThemeUpdateButton from "@/components/custom/ThemeUpdateButton";
 import AnimatedShinyText from "@/components/magicui/animated-shiny-text";
 import Marquee from "@/components/magicui/marquee";
+import ShineBorder from "@/components/magicui/shine-border";
+import { imageBlurFunction } from "@/lib/imageBlur";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import { Container, Tooltip } from "@mui/material";
+import {
+    Button,
+    Container,
+    Link as MaterialLink,
+    Tooltip,
+} from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
 const divIconsClass =
     "rounded-full md:p-1 py-1 hover:cursor-pointer text-stone-600 transition-all duration-150 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-50";
 
 const techImages = [
     { image: "linux.png" },
-    { image: "ubuntu.png", alt: "Ubuntu Server" },
+    { alt: "Ubuntu Server", image: "ubuntu.png" },
     { image: "docker.png" },
     { image: "kubernetes.png" },
     { image: "c.png" },
-    { image: "cpp.png", alt: "C++" },
+    { alt: "C++", image: "cpp.png" },
     { image: "java.png" },
     { image: "python.png" },
-    { image: "html.png", alt: "HTML" },
-    { image: "css.png", alt: "CSS" },
-    { image: "javascript.png", alt: "JavaScript" },
-    { image: "typescript.png", alt: "TypeScript" },
-    { image: "react.png", alt: "ReactJS" },
+    { alt: "HTML", image: "html.png" },
+    { alt: "CSS", image: "css.png" },
+    { alt: "JavaScript", image: "javascript.png" },
+    { alt: "TypeScript", image: "typescript.png" },
+    { alt: "ReactJS", image: "react.png" },
     { image: "redux.png" },
-    { image: "next.png", alt: "NextJS" },
-    { image: "tailwind.png", alt: "TailWindCSS" },
+    { alt: "NextJS", image: "next.png" },
+    { alt: "TailWindCSS", image: "tailwind.png" },
     { image: "prisma.png" },
-    { image: "node.png", alt: "NodeJS" },
-    { image: "express.png", alt: "ExpressJS" },
-    { image: "socket-io.png", alt: "Socket.IO" },
-    { image: "dotenv.png", alt: "Dotenv" },
-    { image: "jquery.png", alt: "jQuery" },
+    { alt: "NodeJS", image: "node.png" },
+    { alt: "ExpressJS", image: "express.png" },
+    { alt: "Socket.IO", image: "socket-io.png" },
+    { alt: "Dotenv", image: "dotenv.png" },
+    { alt: "jQuery", image: "jquery.png" },
     { image: "flask.png" },
-    { image: "postgresql.png", alt: "PostgreSQL" },
-    { image: "mongodb.png", alt: "MongoDB" },
+    { alt: "PostgreSQL", image: "postgresql.png" },
+    { alt: "MongoDB", image: "mongodb.png" },
     { image: "postman.png" },
-    { image: "vscode.png", alt: "VS Code" },
+    { alt: "VS Code", image: "vscode.png" },
     { image: "vim.png" },
     { image: "bash.png" },
     { image: "git.png" },
-    { image: "material-ui.png", alt: "Material UI" },
+    { alt: "Material UI", image: "material-ui.png" },
     { image: "bootstrap.png" },
 ];
 
@@ -162,14 +174,10 @@ export default async function Home() {
                         pauseOnHover
                         reverse
                     >
-                        {techImages.map(async ({ image, alt }, i) => {
-                            const imageBlur = await fetch(
-                                "http://localhost:3000//icons/out/" + image
-                            ).then(async (res) => {
-                                return Buffer.from(
-                                    await res.arrayBuffer()
-                                ).toString("base64");
-                            });
+                        {techImages.map(async ({ alt, image }, i) => {
+                            const imageBlur = await imageBlurFunction(
+                                "icons/out/" + image
+                            );
 
                             const altText =
                                 alt ||
@@ -179,27 +187,30 @@ export default async function Home() {
                             return (
                                 <Tooltip
                                     key={i}
-                                    title={altText}
                                     placement="top"
                                     style={{ pointerEvents: "auto" }}
+                                    title={altText}
                                 >
                                     <Image
-                                        src={"/icons/out/" + image}
-                                        width={50}
-                                        height={30}
                                         alt={altText}
                                         blurDataURL={`data:image/png;base64,${imageBlur}`}
                                         className={
                                             "grayscale transition-all duration-150 hover:grayscale-0 dark:invert dark:hover:invert-0 " +
                                             ([
-                                                "next.png",
                                                 "express.png",
                                                 "flask.png",
+                                                "next.png",
                                             ].includes(image)
                                                 ? " dark:!invert"
+                                                : "") +
+                                            (image === "linux.png"
+                                                ? "!invert-0"
                                                 : "")
                                         }
-                                    ></Image>
+                                        height={30}
+                                        src={"/icons/out/" + image}
+                                        width={50}
+                                    />
                                 </Tooltip>
                             );
                         })}
@@ -210,9 +221,59 @@ export default async function Home() {
                 <div className="line-tb col-span-3 h-16"></div>
                 <div className="line-tb col-span-3 h-16"></div>
                 <div className="line-tb col-span-3 h-16"></div>
-                <div className="line-lr relative bottom-[1px] right-[1px] col-span-1 h-16 w-16">
-                    <div className="line-tb h-16"></div>
+                <div className="line-lr relative bottom-[1px] right-[1px] col-span-1 h-16 w-full">
+                    <div className="line-tb h-16 w-full"></div>
                 </div>
+            </div>
+            <div className="mt-24 flex justify-center">
+                <ShineBorder
+                    className="rounded-lg border"
+                    color={["#a8a29e", "#57534e"]}
+                >
+                    <div className="max-w-[512px] p-4">
+                        <p className="text-center text-stone-900 dark:text-stone-100">
+                            Click{" "}
+                            <Link
+                                className="group text-stone-600 decoration-1 hover:text-stone-700 hover:underline dark:text-stone-400 dark:hover:text-stone-300"
+                                href="www.google.com"
+                            >
+                                <span>here</span>
+                                <span className="relative bottom-[1px] left-[1px] group-hover:bottom-[2px] group-hover:left-[2px]">
+                                    <ArrowOutwardIcon className="text-base" />
+                                </span>
+                            </Link>{" "}
+                            to check out out how I host this website on a home
+                            server using free and open source software!
+                        </p>
+                        <div className="flex justify-center px-6 pb-2 pt-6">
+                            <AnimatedBeam
+                                image1={
+                                    <Image
+                                        alt="Linux"
+                                        blurDataURL={`data:image/png;base64,${await imageBlurFunction("icons/linux.png")}`}
+                                        className="grayscale transition-all duration-150 hover:grayscale-0"
+                                        height={100}
+                                        src={"/icons/linux.png"}
+                                        width={100}
+                                    />
+                                }
+                                image2={
+                                    <Image
+                                        alt="Wireguard"
+                                        blurDataURL={`data:image/png;base64,${await imageBlurFunction("icons/wireguard.png")}`}
+                                        className="grayscale transition-all duration-150 hover:grayscale-0 dark:invert dark:hover:invert-0"
+                                        height={100}
+                                        src={"/icons/wireguard.png"}
+                                        width={100}
+                                    />
+                                }
+                            />
+                        </div>
+                    </div>
+                </ShineBorder>
+            </div>
+            <div className="my-24">
+                <BezierCurve />
             </div>
         </Container>
     );
