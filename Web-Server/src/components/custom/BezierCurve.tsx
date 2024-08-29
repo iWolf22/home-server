@@ -115,10 +115,7 @@ export default function BezierCurve() {
                 }}
             ></div>
             <div className="relative bottom-[60px]">
-                <svg
-                    className="absolute top-[-250px] h-[500px] w-full"
-                    stroke-dasharray="2.5,1.5"
-                >
+                <svg className="absolute top-[-250px] h-[500px] w-full">
                     <path
                         className="fill-none stroke-current stroke-[1px] text-stone-400 dark:text-stone-600"
                         ref={path}

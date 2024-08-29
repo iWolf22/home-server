@@ -45,13 +45,19 @@ export default function AnimatedBeamComponent({
             <div className="flex h-full w-full flex-col items-stretch justify-between gap-10">
                 <div className="flex flex-row justify-between">
                     <Circle ref={div1Ref}>
-                        <Tooltip title="Home server running a dockerized NextJS application">
+                        <Tooltip
+                            placement="top"
+                            title="Home server running a dockerized NextJS application"
+                        >
                             {image1 as ReactElement}
                         </Tooltip>
                     </Circle>
                     <Circle ref={div2Ref}>
                         {" "}
-                        <Tooltip title="Oracle VPS with a Wireguard VPN to bypass a CGNAT">
+                        <Tooltip
+                            placement="top"
+                            title="Oracle VPS with a Wireguard VPN to bypass a CGNAT"
+                        >
                             {image2 as ReactElement}
                         </Tooltip>
                     </Circle>

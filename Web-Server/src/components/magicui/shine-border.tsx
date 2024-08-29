@@ -34,7 +34,7 @@ export default function ShineBorder({
     return (
         <div
             className={cn(
-                "relative grid min-h-[60px] w-fit min-w-[300px] place-items-center rounded-[--border-radius] bg-stone-100 dark:bg-stone-900",
+                "relative grid min-h-[60px] w-fit min-w-[300px] place-items-center rounded-[--border-radius] border-none bg-stone-100 dark:bg-stone-900",
                 className
             )}
             style={
