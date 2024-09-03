@@ -263,10 +263,7 @@ export default async function Home() {
                     <div className="line-bt relative right-[1px] h-16 w-full"></div>
                     <div className="line-rl h-16 w-full"></div>
                     <div
-                        className={
-                            "col-span-9 w-full border-[1px] border-dashed border-stone-300 p-8 text-center text-6xl font-black dark:border-stone-700 " +
-                            helvetica.style.fontFamily
-                        }
+                        className="col-span-9 w-full border-[1px] border-dashed border-stone-300 p-8 text-center text-6xl font-black dark:border-stone-700"
                         style={{ borderWidth: "1px 1px 0px 1px" }}
                     >
                         <AnimatedShinyText>
