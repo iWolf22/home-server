@@ -26,5 +26,5 @@ jobs: # A workflow can have multiple jobs run in parallel by default
         with:
           file: ./Web-Server/Dockerfile # Points to the Dockerfile
           context: ./Web-Server
-          tags: personal-website:latest # Tag the docker image
+          tags: iwolf22/personal-website:latest # Tag the docker image
           target: runner # Dockerfile stage
