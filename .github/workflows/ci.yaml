@@ -21,7 +21,6 @@ jobs: # A workflow can have multiple jobs run in parallel by default
       - name: Docker build # Name of a second step
         uses: docker/build-push-action@v6 # Second GitHub Action to use
         with:
-          context: ./Web-Server/ # Points to the folder with the Dockerfile
           file: ./Web-Server/Dockerfile # Points to the Dockerfile
           tags: iwolf22/personal-website:latest # Tag the docker image
           target: runner # Dockerfile stage
