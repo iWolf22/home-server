@@ -6,9 +6,10 @@ services:
         image: iwolf22/personal-website:latest
         restart: always
         volumes:
-            - ./:/app
             - nextjs-node-modules-folder:/app/node_modules
             - nextjs-next-folder:/app/.next
+        environment:
+            NODE_ENV: production
         ports:
             - 3000:3000
 
