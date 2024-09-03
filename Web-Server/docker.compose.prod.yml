@@ -1,13 +1,10 @@
-name: personal-website
+name: personal-website-production
 
 services:
     nextjs:
         container_name: nextjs
-        build:
-            context: .
-            target: dev
+        image: iwolf22/personal-website:latest
         restart: always
-        command: "npm run dev"
         volumes:
             - ./:/app
             - nextjs-node-modules-folder:/app/node_modules

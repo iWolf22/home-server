@@ -1,4 +1,4 @@
-name: personal-website
+name: personal-website-development
 
 services:
     nextjs:
@@ -26,8 +26,6 @@ services:
             - 443:443
         volumes:
             - ./utils/nginx/nginx.dev.conf:/etc/nginx/nginx.conf
-            - ./certbot/www/:/var/www/certbot/
-            - ./certbot/conf:/etc/letsencrypt
 
 volumes:
     nextjs-node-modules-folder:
