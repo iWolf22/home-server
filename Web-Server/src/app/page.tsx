@@ -1,4 +1,3 @@
-import { helvetica } from "@/app/layout";
 import AnimatedBackground from "@/components/core/animated-background";
 import MagneticGSAP from "@/components/core/gsap";
 import AnimatedBeam from "@/components/custom/AnimationBeam";
@@ -268,12 +267,7 @@ export default async function Home() {
                     >
                         <AnimatedShinyText>
                             Hi, I am Joshua Dierickse
-                            <span
-                                className={
-                                    "block w-full pt-2 font-sans text-2xl font-black " +
-                                    helvetica.style.fontFamily
-                                }
-                            >
+                            <span className="block w-full pt-2 font-sans text-2xl font-black">
                                 Full Stack, DevOps, and Linux Enthusiast
                             </span>
                         </AnimatedShinyText>
