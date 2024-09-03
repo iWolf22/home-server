@@ -3,12 +3,14 @@ import AnimatedBackground from "@/components/core/animated-background";
 import MagneticGSAP from "@/components/core/gsap";
 import AnimatedBeam from "@/components/custom/AnimationBeam";
 import BezierCurve from "@/components/custom/BezierCurve";
+import DropDown from "@/components/custom/DropDown";
 import DynamicThemeIcon from "@/components/custom/DynamicThemeIcon";
 import SwiperComponent from "@/components/custom/SwiperComponent";
 import ThemeUpdateButton from "@/components/custom/ThemeUpdateButton";
 import AnimatedShinyText from "@/components/magicui/animated-shiny-text";
 import Marquee from "@/components/magicui/marquee";
 import ShineBorder from "@/components/magicui/shine-border";
+import { Glow, GlowCapture } from "@/components/react-glow";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -52,6 +54,124 @@ const techImages = [
     { image: "git.png" },
     { alt: "Material UI", image: "material-ui.png" },
     { image: "bootstrap.png" },
+];
+
+const workList = [
+    {
+        company: "SigmaXL Inc.",
+        description: (
+            <div>
+                <p>• TBW</p>
+            </div>
+        ),
+        image: "sigmaxl.png",
+        location: "Kitchener, ON",
+        role: "Software Developer",
+        time: "05/2024 - 08/2024",
+    },
+    {
+        company: "Art Vault",
+        description: (
+            <div>
+                <p>• TBW</p>
+            </div>
+        ),
+        image: "art-vault.jpg",
+        location: "Remote",
+        role: "Backend Developer",
+        time: "04/2024 - 06/2024",
+    },
+    {
+        company: "Venuiti Solutions Inc.",
+        description: (
+            <div>
+                <p>
+                    • Updated documentation on launching the T6 backend servers
+                    to improve the <b>efficiency of onboarding</b>.
+                </p>
+                <p>
+                    • Learned the basics of <b>computer networking</b> (IP, DNS,
+                    HTTPS) as well as the companies backend structure (Spring
+                    Boot, Gradle, Maven).
+                </p>
+            </div>
+        ),
+        image: "venuiti.png",
+        location: "Waterloo, ON",
+        role: "Software Intern",
+        time: "08/2023",
+    },
+    {
+        company: "HomeworkHub Tutoring",
+        description: (
+            <div>
+                <p>
+                    • Taught a series of lectures regarding the fundamentals of{" "}
+                    <b>Python</b> to students from grades 4 to 8 over a virtual
+                    setting.
+                </p>
+                <p>
+                    • Delivered comprehensive PowerPoint lessons as well as
+                    developed in-class and take-home assignments to{" "}
+                    <b>solidify student understanding</b>.
+                </p>
+            </div>
+        ),
+        image: "homeworkhub.png",
+        location: "Waterloo, ON",
+        role: "Python Programming Instructor",
+        time: "06/2023 - 08/2023",
+    },
+    {
+        company: "Waterloo Collegiate Institute Robotics Club",
+        description: (
+            <div>
+                <p>
+                    • Led weekly lessons, teaching students how to build{" "}
+                    <b>Arduino circuits</b> with various components such as{" "}
+                    <b>LCD displays, ultrasonic sensors, piezo speakers</b>,
+                    etc, and then taught students how to code their creations
+                    with <b>C++</b>.
+                </p>
+                <p>
+                    • Instructed club attendees through various mediums
+                    including PowerPoints, hands-on circuits, and virtual
+                    simulations.
+                </p>
+            </div>
+        ),
+        image: "wci.png",
+        location: "Waterloo, ON",
+        role: "Club Executive",
+        time: "09/2022 - 06/2023",
+    },
+];
+
+const schoolList = [
+    {
+        company: "University of Waterloo",
+        description: (
+            <div>
+                <p>• TBW</p>
+            </div>
+        ),
+        image: "uwaterloo.svg",
+        location: "Waterloo, ON",
+        role: "Computer Science",
+        time: "09/2023 - 04/2028",
+    },
+    {
+        company: "Waterloo Collegiate Institute",
+        description: (
+            <div>
+                <p>• TBW</p>
+            </div>
+        ),
+        image: "wci.png",
+        location: "Waterloo, ON",
+        role: "High School Diploma",
+        time: "09/2019 - 06/2023",
+    },
 ];
 
 const TABS = ["Home", "Work", "Projects", "Blog"];
@@ -260,13 +380,62 @@ export default async function Home() {
                         </div>
                     </ShineBorder>
                 </div>
-                <div className="my-24">
+                <div className="mt-24">
                     <BezierCurve />
                 </div>
-                <p className="text-2xl font-extrabold">Projects</p>
-                <div className="mb-24 mt-1">
-                    <SwiperComponent />
+            </Container>
+
+            <GlowCapture>
+                <div className="py-48">
+                    <Container>
+                        {[
+                            { header: "Education", list: schoolList },
+                            { header: "Experience", list: workList },
+                        ].map(({ header, list }, j) => {
+                            return (
+                                <div key={j}>
+                                    <p className="mb-1 mt-8 text-2xl font-extrabold">
+                                        {header}
+                                    </p>
+                                    {list.map(
+                                        (
+                                            {
+                                                company,
+                                                description,
+                                                image,
+                                                location,
+                                                role,
+                                                time,
+                                            },
+                                            i
+                                        ) => {
+                                            return (
+                                                <div key={i}>
+                                                    <Glow
+                                                        company={company}
+                                                        description={
+                                                            description
+                                                        }
+                                                        i={i}
+                                                        image={image}
+                                                        length={list.length - 1}
+                                                        location={location}
+                                                        role={role}
+                                                        time={time}
+                                                    />
+                                                </div>
+                                            );
+                                        }
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </Container>
                 </div>
+            </GlowCapture>
+            <Container>
+                <p className="mb-1 text-2xl font-extrabold">Projects</p>
+                <SwiperComponent />
             </Container>
         </div>
     );

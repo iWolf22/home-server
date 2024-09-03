@@ -1,11 +1,13 @@
 "use client";
 
+import { createTheme, ThemeProvider } from "@mui/material";
 import { Inter } from "next/font/google";
 import {
     createContext,
     Dispatch,
     SetStateAction,
     useEffect,
+    useMemo,
     useState,
 } from "react";
 
@@ -45,6 +47,29 @@ export default function ThemeContext({
         setTheme(browserTheme.matches ? "dark" : "light");
     }, [theme]);
 
+    const materialTheme = useMemo(() => {
+        return createTheme({
+            components: {
+                MuiChip: {
+                    variants: [
+                        {
+                            props: { variant: "filled" },
+                            style: {
+                                background:
+                                    theme === "dark" ? "#292524" : "##e7e5e4",
+                                color:
+                                    theme === "dark" ? "#a8a29e" : "##57534e",
+                            },
+                        },
+                    ],
+                },
+            },
+            palette: {
+                mode: theme,
+            },
+        });
+    }, [theme]); // useMemo for on `theme` for better performance.
+
     return (
         <body
             className={
@@ -58,7 +83,9 @@ export default function ThemeContext({
                 <CreateThemeContext.Provider
                     value={{ setTheme: setTheme, theme: theme || "light" }}
                 >
-                    {children}
+                    <ThemeProvider theme={materialTheme}>
+                        {children}
+                    </ThemeProvider>
                 </CreateThemeContext.Provider>
             </main>
         </body>

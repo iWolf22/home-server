@@ -8,7 +8,10 @@ const config = {
         "./src/**/*.{ts,tsx}",
     ],
     darkMode: ["class"],
-    plugins: [require("tailwindcss-animate")],
+    plugins: [
+        require("tailwindcss-animate"),
+        require("@codaworks/react-glow/tailwind"),
+    ],
     prefix: "",
     theme: {
         container: {
@@ -68,17 +71,6 @@ const config = {
                 },
             },
             keyframes: {
-                "shine-pulse": {
-                    "0%": {
-                        "background-position": "0% 0%",
-                    },
-                    "50%": {
-                        "background-position": "100% 100%",
-                    },
-                    to: {
-                        "background-position": "0% 0%",
-                    },
-                },
                 "accordion-down": {
                     from: { height: "0" },
                     to: { height: "var(--radix-accordion-content-height)" },
@@ -103,6 +95,17 @@ const config = {
                     "30%, 60%": {
                         "background-position":
                             "calc(100% + var(--shimmer-width)) 0",
+                    },
+                },
+                "shine-pulse": {
+                    "0%": {
+                        "background-position": "0% 0%",
+                    },
+                    "50%": {
+                        "background-position": "100% 100%",
+                    },
+                    to: {
+                        "background-position": "0% 0%",
                     },
                 },
             },
