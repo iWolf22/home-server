@@ -43,5 +43,5 @@ jobs: # A workflow can have multiple jobs run in parallel by default
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: fastfetch
+          script: echo ${{ secrets.SUDO_PASSPHRASE }} | sudo -S sh devops.sh
 
