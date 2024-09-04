@@ -268,7 +268,7 @@ export default async function Home() {
                         <AnimatedShinyText>
                             Hi, I am Joshua Dierickse
                             <span className="block w-full pt-2 font-sans text-2xl font-black">
-                                Full Stack, DevOps, and Linux Enthusiast
+                                Full Stack, DevOps, and Linux Enthusiast (Hello World)
                             </span>
                         </AnimatedShinyText>
                     </div>

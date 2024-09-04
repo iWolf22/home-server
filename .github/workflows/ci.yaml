@@ -34,3 +34,14 @@ jobs: # A workflow can have multiple jobs run in parallel by default
           push: true # Push to Docker Hub
           cache-from: type=gha # Caching dockerfile stages with GitHub Actions
           cache-to: type=gha,mode=max # ...
+
+      - name: Docker compose redeploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: fastfetch
+
