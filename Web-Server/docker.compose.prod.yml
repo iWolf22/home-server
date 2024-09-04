@@ -5,9 +5,6 @@ services:
         container_name: nextjs
         image: iwolf22/personal-website:latest
         restart: always
-        volumes:
-            - nextjs-node-modules-folder:/app/node_modules
-            - nextjs-next-folder:/app/.next
         environment:
             NODE_ENV: production
         ports:
@@ -33,7 +30,7 @@ services:
         volumes:
             - ./certbot/conf/:/etc/letsencrypt/
             - ./certbot/www/:/var/www/certbot/
-        command: certonly --webroot -w /var/www/certbot --force-renewal --email joshua.dierickse@gmail.com -d joshuadierickse.me --agree-tos
+        command: certonly --webroot -w /var/www/certbot --keep-until-expiring --email joshua.dierickse@gmail.com -d joshuadierickse.me --agree-tos
 
 volumes:
     nextjs-node-modules-folder:
