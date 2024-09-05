@@ -115,3 +115,7 @@
   background: linear-gradient(to bottom, transparent 60%, #1c1917 60%), linear-gradient(to bottom, #44403c, #1c1917);
   background-size: 1px 4px, 1px 100%;
 }
+
+html {
+  scroll-behavior: smooth;
+}

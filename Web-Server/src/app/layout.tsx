@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import ThemeContext from "@/components/custom/ThemeContext";
+import Footer from "@/components/general/Footer";
+import Navbar from "@/components/general/Navbar";
 
 import "./globals.css";
 
@@ -16,7 +18,15 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <ThemeContext>{children}</ThemeContext>
+            <ThemeContext>
+                <div className="flex min-h-[calc(100vh)] flex-col justify-between">
+                    <div>
+                        <Navbar />
+                        {children}
+                    </div>
+                    <Footer />
+                </div>
+            </ThemeContext>
         </html>
     );
 }
