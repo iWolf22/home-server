@@ -209,7 +209,7 @@ export default async function Home() {
                                         <Image
                                             alt={altText}
                                             className={
-                                                "grayscale transition-all duration-150 hover:grayscale-0 dark:invert dark:hover:invert-0 " +
+                                                "px-1 grayscale transition-all duration-150 hover:grayscale-0 dark:invert dark:hover:invert-0 " +
                                                 ([
                                                     "express.png",
                                                     "flask.png",
@@ -249,7 +249,7 @@ export default async function Home() {
                                 Click{" "}
                                 <Link
                                     className="group text-stone-600 decoration-1 hover:text-stone-700 hover:underline dark:text-stone-400 dark:hover:text-stone-300"
-                                    href="www.google.com"
+                                    href="/blog"
                                 >
                                     <span>here</span>
                                     <span className="relative bottom-[1px] left-[1px] group-hover:bottom-[2px] group-hover:left-[2px]">
@@ -275,7 +275,7 @@ export default async function Home() {
                                             alt="Wireguard"
                                             className="grayscale transition-all duration-150 hover:grayscale-0 dark:invert dark:hover:invert-0"
                                             height={100}
-                                            src={"/icons/wireguard.png"}
+                                            src={"/other/wireguard.png"}
                                             width={100}
                                         />
                                     }
