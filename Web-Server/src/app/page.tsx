@@ -50,7 +50,43 @@ const workList = [
         company: "SigmaXL Inc.",
         description: (
             <div>
-                <p>• TBW</p>
+                <p>
+                    • Developed a new full-stack web portal and user database
+                    using <b>TypeScript</b>, <b>NextJS</b>, and{" "}
+                    <b>PostgreSQL</b>; decreasing deployment costs from
+                    <b>$120/month</b> to <b>$8/month</b>.
+                </p>
+                <p>
+                    • Migrated over <b>6,000+ users</b> from the old MySQL
+                    database to the new PostgreSQL database.
+                </p>
+                <p>
+                    • Engineered a <b>RAG AI</b> customer support chatbot on a{" "}
+                    <b>Flask</b> backend with over 2 million words of context by
+                    leveraging <b>GPT-4o mini</b>, <b>LangChain</b>, and a
+                    ChromaDB vector database.
+                </p>
+                <p>
+                    • Engineered a <b>RAG AI</b> customer support chatbot on a{" "}
+                    <b>Flask</b> backend with over 2 million words of context by
+                    leveraging <b>GPT-4o mini</b>, <b>LangChain</b>, and a
+                    ChromaDB vector database.
+                </p>
+                <p>
+                    • Implemented an automated email verification system,
+                    programmatically sending emails with <b>AWS SES</b>.
+                </p>
+                <p>
+                    • Created a customer support messaging system using an{" "}
+                    <b>Express</b> backend with <b>Socket.IO</b> for real-time
+                    bidirectional low-latency communication.
+                </p>
+                <p>
+                    • <b>Dockerized</b> the NextJS, Express, and Flask
+                    applications; worked locally with <b>docker-compose</b> and
+                    deployed to the cloud on a <b>Linux VPS</b> using{" "}
+                    <b>Bash</b> scripts to automate <b>CI/CD</b>.
+                </p>
             </div>
         ),
         image: "sigmaxl.png",
@@ -62,7 +98,19 @@ const workList = [
         company: "Art Vault",
         description: (
             <div>
-                <p>• TBW</p>
+                <p>
+                    • Developed backend API endpoints in <b>NextJS</b> to upload
+                    images to a Vercel Blob (similar to an <b>AWS S3 bucket</b>
+                    ).
+                </p>
+                <p>
+                    • Stored user data in a <b>PostgreSQL</b> database,
+                    leveraging <b>Prisma ORM</b> for improved development speed.
+                </p>
+                <p>
+                    • Collaborated with a small team of developers to coordinate
+                    our project&apos;s development.
+                </p>
             </div>
         ),
         image: "art-vault.jpg",
@@ -141,7 +189,21 @@ const schoolList = [
         company: "University of Waterloo",
         description: (
             <div>
-                <p>• TBW</p>
+                <p>
+                    <b>GPA:</b> 3.8
+                </p>
+                <p>
+                    <b>Activities and societies:</b> Computer Science Club, Math
+                    Society, Hockey Intramurals Referee, Volleyball
+                    ClubActivities
+                </p>
+                <p className="pt-4">
+                    • University of Waterloo President&apos;s Scholarship of
+                    Distinction
+                </p>
+                <p>
+                    • Professional Institute Legacy Foundation Scholarship Award
+                </p>
             </div>
         ),
         image: "uwaterloo.svg",
@@ -153,7 +215,21 @@ const schoolList = [
         company: "Waterloo Collegiate Institute",
         description: (
             <div>
-                <p>• TBW</p>
+                <p>
+                    <b>Grade:</b> 98.33%
+                </p>
+                <p>
+                    <b>Leadership:</b> Robotics Club Executive, Chess Club
+                    Executive
+                </p>
+                <p>
+                    <b>Sports:</b> Cross Country, Track and Field, Ultimate
+                    Frisbee, Varsity Hockey
+                </p>
+                <p>
+                    <b>Clubs:</b> Astronomy Club, Computer Science Club, Debate
+                    Club, DECA, Fed Prov
+                </p>
             </div>
         ),
         image: "wci.png",
@@ -201,6 +277,7 @@ export default async function Home() {
 
                                 return (
                                     <Tooltip
+                                        disableInteractive
                                         key={i}
                                         placement="top"
                                         style={{ pointerEvents: "auto" }}

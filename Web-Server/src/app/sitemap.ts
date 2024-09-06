@@ -1,3 +1,4 @@
+import { WEBSITE_URL } from "@/lib/constants";
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -23,10 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             ...item,
             changeFrequency: "monthly",
             lastModified: new Date(),
-            url:
-                (process.env.NODE_ENV === "production"
-                    ? "https://joshuadierickse.me"
-                    : "http://localhost") + item.url,
+            url: WEBSITE_URL,
         };
     });
 }

@@ -74,7 +74,7 @@ export default function DropDown({
                 </div>
             </div>
             <Collapse in={open}>
-                <div className="ml-[94px] mt-2 max-w-[850px] text-sm text-stone-900 glow:text-black dark:text-stone-100 dark:glow:text-white">
+                <div className="ml-[94px] mt-2 text-sm text-stone-900 glow:text-black dark:text-stone-100 dark:glow:text-white">
                     {description}
                 </div>
             </Collapse>
