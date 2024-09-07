@@ -194,8 +194,7 @@ const schoolList = [
                 </p>
                 <p>
                     <b>Activities and societies:</b> Computer Science Club, Math
-                    Society, Hockey Intramurals Referee, Volleyball
-                    ClubActivities
+                    Society, Hockey Intramurals Referee, Volleyball Club
                 </p>
                 <p className="pt-4">
                     • University of Waterloo President&apos;s Scholarship of

@@ -2,6 +2,7 @@
 
 import { createTheme, ThemeProvider } from "@mui/material";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import {
     createContext,
     Dispatch,
@@ -29,8 +30,30 @@ export default function ThemeContext({
     const [theme, setTheme] = useState<"dark" | "light">();
 
     useEffect(() => {
+        function setBrowserLight() {
+            if (htmlBody && htmlBody.classList) {
+                htmlBody.classList.remove("bg-stone-900");
+                htmlBody.classList.remove("dark");
+                htmlBody.classList.add("bg-stone-100");
+                htmlBody.classList.add("light");
+            }
+        }
+
+        function setBrowserDark() {
+            if (htmlBody && htmlBody.classList) {
+                htmlBody.classList.remove("bg-stone-100");
+                htmlBody.classList.remove("light");
+                htmlBody.classList.add("bg-stone-900");
+                htmlBody.classList.add("dark");
+            }
+        }
+
+        const htmlBody = document.getElementById("body");
+
         if (theme) {
             localStorage.setItem("PERSONAL_WEBSITE_COLOR_THEME", theme);
+            if (theme === "dark") setBrowserDark();
+            else setBrowserLight();
             return;
         }
 
@@ -71,14 +94,7 @@ export default function ThemeContext({
     }, [theme]); // useMemo for on `theme` for better performance.
 
     return (
-        <body
-            className={
-                inter.className +
-                " " +
-                theme +
-                (theme === "dark" ? " bg-stone-900" : " bg-stone-100")
-            }
-        >
+        <body className={inter.className} id="body">
             <main>
                 <CreateThemeContext.Provider
                     value={{ setTheme: setTheme, theme: theme || "light" }}

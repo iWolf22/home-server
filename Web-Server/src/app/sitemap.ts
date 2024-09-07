@@ -19,12 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.1,
             url: "/robots.txt",
         },
-    ].map((item) => {
+    ].map(({ priority, url }) => {
         return {
-            ...item,
             changeFrequency: "monthly",
             lastModified: new Date(),
-            url: WEBSITE_URL,
+            priority,
+            url: WEBSITE_URL + url,
         };
     });
 }
