@@ -47,34 +47,41 @@ export default function DropDown({
                 <div className="flex items-center gap-4">
                     <ExpandMoreIcon
                         className={
-                            "-rotate-90 text-stone-600 transition-all glow:text-black dark:text-stone-400 dark:glow:text-white " +
+                            "hidden -rotate-90 text-stone-600 transition-all glow:text-black dark:text-stone-400 dark:glow:text-white sm:block " +
                             (open ? " !rotate-0" : " !-rotate-90")
                         }
                     />
                     <Image
                         alt={image}
-                        className={"rounded-sm " + backgroundColor()}
+                        className={
+                            "hidden rounded-sm min-[400px]:block " +
+                            backgroundColor()
+                        }
                         height="38"
                         quality={100}
                         src={"/work/" + image}
                         width="38"
                     />
                     <div>
-                        <p className="text-lg font-bold">{company}</p>
-                        <p className="text-sm text-stone-600 glow:text-black dark:text-stone-400 dark:glow:text-white">
+                        <p className="text-sm font-bold sm:text-lg">
+                            {company}
+                        </p>
+                        <p className="text-xs text-stone-600 glow:text-black dark:text-stone-400 dark:glow:text-white sm:text-sm">
                             {role}
                         </p>
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="mb-1 text-base font-semibold">{location}</p>
-                    <p className="text-sm text-stone-600 glow:text-black dark:text-stone-400 dark:glow:text-white">
+                    <p className="mb-1 text-sm font-semibold sm:text-base">
+                        {location}
+                    </p>
+                    <p className="text-xs text-stone-600 glow:text-black dark:text-stone-400 dark:glow:text-white sm:text-sm">
                         {time}
                     </p>
                 </div>
             </div>
             <Collapse in={open}>
-                <div className="ml-[94px] mt-2 text-sm text-stone-900 glow:text-black dark:text-stone-100 dark:glow:text-white">
+                <div className="mt-2 text-xs text-stone-900 glow:text-black dark:text-stone-100 dark:glow:text-white sm:ml-[94px] sm:text-sm">
                     {description}
                 </div>
             </Collapse>

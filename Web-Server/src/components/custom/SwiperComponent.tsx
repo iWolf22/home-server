@@ -157,11 +157,12 @@ export default function SwiperComponent() {
                         <div className="p-5">
                             <Image
                                 alt="Image"
+                                className=""
                                 placeholder="blur"
                                 src={projectList[modal]?.image}
                                 width={512}
                             />
-                            <div className="mt-3 flex flex-wrap items-center gap-2">
+                            <div className="mt-3 flex flex-wrap items-center gap-x-2 text-sm sm:text-base">
                                 <p className="font-bold text-stone-900 dark:text-stone-100">
                                     {projectList[modal]?.title}
                                 </p>
@@ -178,10 +179,10 @@ export default function SwiperComponent() {
                                     <GitHubIcon className="relative bottom-[2px] text-stone-600 transition-colors duration-150 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100" />
                                 </a>
                             </div>
-                            <p className="w-[512px] pt-1 text-sm">
+                            <p className="max-w-[512px] pt-1 text-xs sm:text-sm">
                                 {projectList[modal]?.description}
                             </p>
-                            <div className="flex flex-wrap gap-2 pt-3">
+                            <div className="flex flex-wrap gap-1 pt-3 sm:gap-2">
                                 {projectList[modal]?.languages.map(
                                     (language, i) => {
                                         return (
@@ -228,7 +229,7 @@ export default function SwiperComponent() {
                                 src={image}
                                 width={512}
                             />
-                            <div className="z-50 flex gap-2 pt-1">
+                            <div className="z-50 flex gap-2 pt-1 text-base">
                                 <p className="font-bold text-stone-900 dark:text-stone-100">
                                     {title}
                                 </p>

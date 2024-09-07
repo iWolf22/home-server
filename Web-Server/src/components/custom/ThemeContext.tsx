@@ -2,7 +2,6 @@
 
 import { createTheme, ThemeProvider } from "@mui/material";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import {
     createContext,
     Dispatch,

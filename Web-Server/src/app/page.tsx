@@ -250,12 +250,12 @@ export default async function Home() {
                     <div className="line-bt relative right-[1px] h-16 w-full"></div>
                     <div className="line-rl h-16 w-full"></div>
                     <div
-                        className="col-span-9 w-full border-[1px] border-dashed border-stone-300 p-8 text-center text-6xl font-black dark:border-stone-700"
+                        className="col-span-9 w-full border-[1px] border-dashed border-stone-300 p-8 text-center text-5xl font-black dark:border-stone-700 sm:text-6xl"
                         style={{ borderWidth: "1px 1px 0px 1px" }}
                     >
                         <AnimatedShinyText>
                             Hi, I am Joshua Dierickse
-                            <span className="block w-full pt-2 font-sans text-2xl font-black">
+                            <span className="block w-full pt-2 font-sans text-xl font-black sm:text-2xl">
                                 Full Stack, DevOps, and Linux Enthusiast
                             </span>
                         </AnimatedShinyText>
@@ -321,7 +321,7 @@ export default async function Home() {
                         color={["#a8a29e", "#57534e"]}
                     >
                         <div className="max-w-[512px] p-4">
-                            <p className="text-center text-stone-900 dark:text-stone-100">
+                            <p className="text-center text-sm text-stone-900 dark:text-stone-100 sm:text-base">
                                 Click{" "}
                                 <Link
                                     className="group text-stone-600 decoration-1 hover:text-stone-700 hover:underline dark:text-stone-400 dark:hover:text-stone-300"
