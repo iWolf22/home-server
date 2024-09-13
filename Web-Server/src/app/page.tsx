@@ -53,18 +53,12 @@ const workList = [
                 <p>
                     • Developed a new full-stack web portal and user database
                     using <b>TypeScript</b>, <b>NextJS</b>, and{" "}
-                    <b>PostgreSQL</b>; decreasing deployment costs from
+                    <b>PostgreSQL</b>; decreasing deployment costs from{" "}
                     <b>$120/month</b> to <b>$8/month</b>.
                 </p>
                 <p>
                     • Migrated over <b>6,000+ users</b> from the old MySQL
                     database to the new PostgreSQL database.
-                </p>
-                <p>
-                    • Engineered a <b>RAG AI</b> customer support chatbot on a{" "}
-                    <b>Flask</b> backend with over 2 million words of context by
-                    leveraging <b>GPT-4o mini</b>, <b>LangChain</b>, and a
-                    ChromaDB vector database.
                 </p>
                 <p>
                     • Engineered a <b>RAG AI</b> customer support chatbot on a{" "}
