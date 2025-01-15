@@ -47,6 +47,21 @@ const techImages = [
 
 const workList = [
     {
+        company: "theScore",
+        description: (
+            <div>
+                <p>
+                    • Currently working at theScore for the Winter 2025 co-op
+                    term.
+                </p>
+            </div>
+        ),
+        image: "theScore.png",
+        location: "Toronto, ON",
+        role: "Software Developer",
+        time: "01/2025 - Present",
+    },
+    {
         company: "SigmaXL Inc.",
         description: (
             <div>
