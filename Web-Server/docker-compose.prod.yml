@@ -4,24 +4,12 @@ services:
     traefik:
         image: "traefik:v3.3"
         container_name: "traefik"
-        command:
-            # - "--log.level=DEBUG"
-            - "--api.insecure=true"
-            - "--providers.docker=true"
-            - "--providers.docker.exposedbydefault=false"
-            - "--entrypoints.web.address=:80"
-            - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-            - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-            - "--entryPoints.websecure.address=:443"
-            - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-            #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-            - "--certificatesresolvers.myresolver.acme.email=joshua.dierickse@gmail.com"
-            - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
         ports:
             - "80:80"
             - "443:443"
         volumes:
             - ".utils/letsencrypt:/letsencrypt"
+            - ".utils/traefik/traefik.yml:/etc/traefik/traefik.yml"
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
     nextjs:

@@ -1,0 +1,29 @@
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: "websecure"
+          scheme: "https"
+  websecure:
+    address: ":443"
+
+api:
+  insecure: false
+  dashboard: false
+
+providers:
+  docker:
+    exposedByDefault: false
+
+accessLog:
+  filePath: "/var/log/access.log"
+  format: common
+
+# Certificates (can be used with Let's Encrypt for automatic SSL/TLS)
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: joshua.dierickse@gmail.com
+      storage: /letsencrypt/acme.json
