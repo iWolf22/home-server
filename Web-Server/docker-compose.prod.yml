@@ -5,7 +5,7 @@ services:
         image: "traefik:v3.3"
         container_name: "traefik"
         command:
-            - "--log.level=DEBUG"
+            # - "--log.level=DEBUG"
             - "--api.insecure=true"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
@@ -37,16 +37,16 @@ services:
             - "traefik.http.routers.nextjs.tls=true" # http or https
             - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
 
-    apache:
-        container_name: apache
-        image: httpd:latest
+    nginx:
+        container_name: nginx
+        image: nginx:latest
         restart: always
         labels:
         - "traefik.enable=true" # Enable Traefik for this container
-        - "traefik.http.routers.apache.rule=Host(`apache.joshuadierickse.me`)" # subdomain for Apache
-        - "traefik.http.routers.apache.entrypoints=websecure" # use https
-        - "traefik.http.routers.apache.tls=true"  # Enable TLS for Apache
-        - "traefik.http.routers.apache.tls.certresolver=myresolver" # Use the same cert resolver as Next.js
+        - "traefik.http.routers.nginx.rule=Host(`nginx.joshuadierickse.me`)" # subdomain for Apache
+        - "traefik.http.routers.nginx.entrypoints=websecure" # use https
+        - "traefik.http.routers.nginx.tls=true"  # Enable TLS for Apache
+        - "traefik.http.routers.nginx.tls.certresolver=myresolver" # Use the same cert resolver as Next.js
 
 volumes:
     nextjs-node-modules-folder:
