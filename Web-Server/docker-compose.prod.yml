@@ -27,8 +27,6 @@ services:
         restart: always
         environment:
             NODE_ENV: production
-        ports:
-            - 3000:3000
         labels:
             - "traefik.enable=true" # this container can use traefik
             - "traefik.http.routers.nextjs.rule=Host(`joshuadierickse.me`)" # subdomain
@@ -39,8 +37,6 @@ services:
     apache:
         image: httpd:latest
         container_name: apache
-        ports:
-            - 80:80
         labels:
             - "traefik.enable=true" # this container can use traefik
             - "traefik.http.routers.apache.rule=Host(`apache.joshuadierickse.me`)" # subdomain
