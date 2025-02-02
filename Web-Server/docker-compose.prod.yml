@@ -40,7 +40,7 @@ services:
         image: httpd:latest
         container_name: apache
         ports:
-            - 8080:80
+            - 80:80
         labels:
             - "traefik.enable=true" # this container can use traefik
             - "traefik.http.routers.apache.rule=Host(`apache.joshuadierickse.me`)" # subdomain
