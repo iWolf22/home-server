@@ -22,3 +22,5 @@ certificatesResolvers:
     acme:
       email: joshua.dierickse@gmail.com
       storage: "/letsencrypt/acme.json"
+      httpChallenge:
+        entryPoint: web
