@@ -5,10 +5,13 @@ services:
         image: "traefik:v3.3"
         container_name: "traefik"
         command:
-            #- "--log.level=DEBUG"
+            - "--log.level=DEBUG"
             - "--api.insecure=true"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+            - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
             - "--entryPoints.websecure.address=:443"
             - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
             #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
@@ -34,15 +37,7 @@ services:
             - "traefik.http.routers.nextjs.tls=true" # http or https
             - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
 
-    apache:
-        image: httpd:latest
-        container_name: apache
-        labels:
-            - "traefik.enable=true" # this container can use traefik
-            - "traefik.http.routers.apache.rule=Host(`apache.joshuadierickse.me`)" # subdomain
-            - "traefik.http.routers.apache.entrypoints=websecure" # http or https
-            - "traefik.http.routers.apache.tls=true" # http or https
-            - "traefik.http.routers.apache.tls.certresolver=myresolver"
+
 
 volumes:
     nextjs-node-modules-folder:
