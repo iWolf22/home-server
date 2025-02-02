@@ -4,14 +4,15 @@ services:
     traefik:
         image: "traefik:v3.3"
         container_name: "traefik"
+        restart: always
         command:
-            - "--configFile=/etc/traefik/traefik.yml"
+            - "traefik.enable=true"
         ports:
             - "80:80"
             - "443:443"
         volumes:
-            - ".utils/letsencrypt:/letsencrypt"
-            - ".utils/traefik/traefik.yml:/etc/traefik/traefik.yml"
+            - "./utils/traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro"
+            - "./utils/letsencrypt:/letsencrypt"
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
     nextjs:
