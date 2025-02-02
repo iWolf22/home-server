@@ -43,7 +43,7 @@ services:
         restart: always
         labels:
         - "traefik.enable=true" # Enable Traefik for this container
-        - "traefik.http.routers.nginx.rule=Host(`nginx.joshuadierickse.me`)" # subdomain for Apache
+        - "traefik.http.routers.nginx.rule=Host(`grafana.joshuadierickse.me`)" # subdomain for Apache
         - "traefik.http.routers.nginx.entrypoints=websecure" # use https
         - "traefik.http.routers.nginx.tls=true"  # Enable TLS for Apache
         - "traefik.http.routers.nginx.tls.certresolver=myresolver" # Use the same cert resolver as Next.js
