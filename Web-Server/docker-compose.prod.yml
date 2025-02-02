@@ -5,8 +5,6 @@ services:
         image: "traefik:v3.3"
         container_name: "traefik"
         restart: always
-        command:
-            - "traefik.enable=true"
         ports:
             - "80:80"
             - "443:443"
