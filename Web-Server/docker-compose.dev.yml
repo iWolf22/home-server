@@ -16,168 +16,175 @@ services:
             - nextjs-next-folder:/app/.next
         ports:
             - 3000:3000
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.personal.rule=Host(`personal.localhost`)"
+            - "traefik.http.routers.personal.entrypoints=web"
 
-    nginx:
-        container_name: nginx
-        image: nginx:1.27
-        restart: always
-        depends_on:
-            - nextjs
-        ports:
-            - 80:80
-            - 443:443
-        volumes:
-            - ./utils/nginx/nginx.dev.conf:/etc/nginx/nginx.conf
-
-    # =============================================
-    # Observability
-    # =============================================
-    grafana:
-        container_name: grafana
-        image: grafana/grafana
-        restart: unless-stopped
-        ports:
-            - 4000:3000
-        volumes:
-            - ./utils/grafana/provisioning:/etc/grafana/provisioning
-            - grafana:/var/lib/grafana
-        environment:
-            - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
-
-
-    prometheus:
-        container_name: prometheus
-        image: prom/prometheus
-        restart: unless-stopped
-        ports:
-            - 9090:9090
-        volumes:
-            - ./utils/prometheus:/etc/prometheus
-            - prometheus:/prometheus
+    traefik:
+        image: "traefik:v3.3"
+        container_name: "traefik"
         command:
-            - '--config.file=/etc/prometheus/prometheus.yml'
-            - '--storage.tsdb.path=/prometheus'
-            - '--storage.tsdb.retention.time=90d'
-            - '--storage.tsdb.retention.size=10GB'
-            - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-            - '--web.console.templates=/usr/share/proemtheus/consoles'
-            - '--web.enable-admin-api'
-
-    cadvisor:
-        container_name: cadvisor
-        image: gcr.io/google-containers/cadvisor
-        restart: unless-stopped
+            #- "--log.level=DEBUG"
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entryPoints.web.address=:80"
         ports:
-            - 9250:9250
-        privileged: true
+            - "80:80"
+            - "8080:8080"
         volumes:
-            - /:/rootfs:ro
-            - /var/run:/var/run:ro
-            - /sys:/sys:ro
-            - /var/lib/docker/:/var/lib/docker:ro
-            - /dev/disk/:/dev/disk:ro
-        devices:
-            - /dev/kmsg
-        command:
-            - '-port=9250'
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-    node-exporter:
-        container_name: node-exporter
-        image: prom/node-exporter
-        restart: unless-stopped
-        ports:
-            - 9100:9100
-        pid: host
-        volumes:
-            - /proc:/host/proc:ro
-            - /sys:/host/sys:ro
-            - /:/rootfs:ro
-        command:
-            - '--path.procfs=/host/proc'
-            - '--path.rootfs=/rootfs'
-            - '--path.sysfs=/host/sys'
-            - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    # # =============================================
+    # # Observability
+    # # =============================================
+    # grafana:
+    #     container_name: grafana
+    #     image: grafana/grafana
+    #     restart: unless-stopped
+    #     ports:
+    #         - 4000:3000
+    #     volumes:
+    #         - ./utils/grafana/provisioning:/etc/grafana/provisioning
+    #         - grafana:/var/lib/grafana
+    #     environment:
+    #         - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
 
-    smartctl:
-        container_name: smartctl
-        image: matusnovak/prometheus-smartctl
-        ports:
-            - 9902:9902
-        restart: unless-stopped
-        privileged: true
 
-    # =============================================
-    # Authentik
-    # =============================================
-    postgresql:
-        image: docker.io/library/postgres:16-alpine
-        restart: unless-stopped
-        volumes:
-            - database:/var/lib/postgresql/data
-        environment:
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-            POSTGRES_USER: ${POSTGRES_USER}
-            POSTGRES_DB: ${POSTGRES_DB}
-        ports:
-            - 5432:5432
+    # prometheus:
+    #     container_name: prometheus
+    #     image: prom/prometheus
+    #     restart: unless-stopped
+    #     ports:
+    #         - 9090:9090
+    #     volumes:
+    #         - ./utils/prometheus:/etc/prometheus
+    #         - prometheus:/prometheus
+    #     command:
+    #         - '--config.file=/etc/prometheus/prometheus.yml'
+    #         - '--storage.tsdb.path=/prometheus'
+    #         - '--storage.tsdb.retention.time=90d'
+    #         - '--storage.tsdb.retention.size=10GB'
+    #         - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+    #         - '--web.console.templates=/usr/share/proemtheus/consoles'
+    #         - '--web.enable-admin-api'
 
-    redis:
-        image: docker.io/library/redis:alpine
-        command: --save 60 1 --loglevel warning
-        restart: unless-stopped
-        volumes:
-            - redis:/data
-        ports:
-            - 6379:6379
+    # cadvisor:
+    #     container_name: cadvisor
+    #     image: gcr.io/google-containers/cadvisor
+    #     restart: unless-stopped
+    #     ports:
+    #         - 9250:9250
+    #     privileged: true
+    #     volumes:
+    #         - /:/rootfs:ro
+    #         - /var/run:/var/run:ro
+    #         - /sys:/sys:ro
+    #         - /var/lib/docker/:/var/lib/docker:ro
+    #         - /dev/disk/:/dev/disk:ro
+    #     devices:
+    #         - /dev/kmsg
+    #     command:
+    #         - '-port=9250'
 
-    server:
-        image: ghcr.io/goauthentik/server:2024.12.2
-        restart: unless-stopped
-        command: server
-        environment:
-            AUTHENTIK_REDIS__HOST: redis
-            AUTHENTIK_POSTGRESQL__HOST: postgresql
-            AUTHENTIK_POSTGRESQL__USER: ${POSTGRES_USER}
-            AUTHENTIK_POSTGRESQL__NAME: ${POSTGRES_DB}
-            AUTHENTIK_POSTGRESQL__PASSWORD: ${POSTGRES_PASSWORD}
-        volumes:
-            - ./utils/authentik/media:/media
-            - ./utils/authentik/custom-templates:/templates
-        env_file:
-            - .env.authentik
-        ports:
-            - 9000:9000
-            - 9443:9443
-        depends_on:
-            - postgresql
-            - redis
-    worker:
-        image: ghcr.io/goauthentik/server:2024.12.2
-        restart: unless-stopped
-        command: worker
-        environment:
-            AUTHENTIK_REDIS__HOST: redis
-            AUTHENTIK_POSTGRESQL__HOST: postgresql
-            AUTHENTIK_POSTGRESQL__USER: ${POSTGRES_USER}
-            AUTHENTIK_POSTGRESQL__NAME: ${POSTGRES_DB}
-            AUTHENTIK_POSTGRESQL__PASSWORD: ${POSTGRES_PASSWORD}
-        # `user: root` and the docker socket volume are optional.
-        # See more for the docker socket integration here:
-        # https://goauthentik.io/docs/outposts/integrations/docker
-        # Removing `user: root` also prevents the worker from fixing the permissions
-        # on the mounted folders, so when removing this make sure the folders have the correct UID/GID
-        # (1000:1000 by default)
-        user: root
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ./media:/media
-            - ./certs:/certs
-            - ./custom-templates:/templates
-        env_file:
-            - .env.authentik
-        depends_on:
-            - postgresql
-            - redis
+    # node-exporter:
+    #     container_name: node-exporter
+    #     image: prom/node-exporter
+    #     restart: unless-stopped
+    #     ports:
+    #         - 9100:9100
+    #     pid: host
+    #     volumes:
+    #         - /proc:/host/proc:ro
+    #         - /sys:/host/sys:ro
+    #         - /:/rootfs:ro
+    #     command:
+    #         - '--path.procfs=/host/proc'
+    #         - '--path.rootfs=/rootfs'
+    #         - '--path.sysfs=/host/sys'
+    #         - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+
+    # smartctl:
+    #     container_name: smartctl
+    #     image: matusnovak/prometheus-smartctl
+    #     ports:
+    #         - 9902:9902
+    #     restart: unless-stopped
+    #     privileged: true
+
+    # # =============================================
+    # # Authentik
+    # # =============================================
+    # postgresql:
+    #     image: docker.io/library/postgres:16-alpine
+    #     restart: unless-stopped
+    #     volumes:
+    #         - database:/var/lib/postgresql/data
+    #     environment:
+    #         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #         POSTGRES_USER: ${POSTGRES_USER}
+    #         POSTGRES_DB: ${POSTGRES_DB}
+    #     ports:
+    #         - 5432:5432
+
+    # redis:
+    #     image: docker.io/library/redis:alpine
+    #     command: --save 60 1 --loglevel warning
+    #     restart: unless-stopped
+    #     volumes:
+    #         - redis:/data
+    #     ports:
+    #         - 6379:6379
+
+    # server:
+    #     image: ghcr.io/goauthentik/server:2024.12.2
+    #     restart: unless-stopped
+    #     command: server
+    #     environment:
+    #         AUTHENTIK_REDIS__HOST: redis
+    #         AUTHENTIK_POSTGRESQL__HOST: postgresql
+    #         AUTHENTIK_POSTGRESQL__USER: ${POSTGRES_USER}
+    #         AUTHENTIK_POSTGRESQL__NAME: ${POSTGRES_DB}
+    #         AUTHENTIK_POSTGRESQL__PASSWORD: ${POSTGRES_PASSWORD}
+    #     volumes:
+    #         - ./utils/authentik/media:/media
+    #         - ./utils/authentik/custom-templates:/templates
+    #     env_file:
+    #         - .env.authentik
+    #     ports:
+    #         - 9000:9000
+    #         - 9443:9443
+    #     depends_on:
+    #         - postgresql
+    #         - redis
+    # worker:
+    #     image: ghcr.io/goauthentik/server:2024.12.2
+    #     restart: unless-stopped
+    #     command: worker
+    #     environment:
+    #         AUTHENTIK_REDIS__HOST: redis
+    #         AUTHENTIK_POSTGRESQL__HOST: postgresql
+    #         AUTHENTIK_POSTGRESQL__USER: ${POSTGRES_USER}
+    #         AUTHENTIK_POSTGRESQL__NAME: ${POSTGRES_DB}
+    #         AUTHENTIK_POSTGRESQL__PASSWORD: ${POSTGRES_PASSWORD}
+    #     # `user: root` and the docker socket volume are optional.
+    #     # See more for the docker socket integration here:
+    #     # https://goauthentik.io/docs/outposts/integrations/docker
+    #     # Removing `user: root` also prevents the worker from fixing the permissions
+    #     # on the mounted folders, so when removing this make sure the folders have the correct UID/GID
+    #     # (1000:1000 by default)
+    #     user: root
+    #     volumes:
+    #         - /var/run/docker.sock:/var/run/docker.sock
+    #         - ./media:/media
+    #         - ./certs:/certs
+    #         - ./custom-templates:/templates
+    #     env_file:
+    #         - .env.authentik
+    #     depends_on:
+    #         - postgresql
+    #         - redis
 
 volumes:
     # Personal Website

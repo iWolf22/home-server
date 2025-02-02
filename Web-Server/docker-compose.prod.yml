@@ -1,6 +1,26 @@
 name: personal-website-production
 
 services:
+    traefik:
+        image: "traefik:v3.3"
+        container_name: "traefik"
+        command:
+            #- "--log.level=DEBUG"
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entryPoints.websecure.address=:443"
+            - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+            #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+            - "--certificatesresolvers.myresolver.acme.email=joshua.dierickse@gmail.com"
+            - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ".utils/letsencrypt:/letsencrypt"
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
     nextjs:
         container_name: nextjs
         image: iwolf22/personal-website:latest
@@ -9,36 +29,24 @@ services:
             NODE_ENV: production
         ports:
             - 3000:3000
-
-    nginx:
-        container_name: nginx
-        image: nginx:1.27
-        restart: always
-        depends_on:
-            - nextjs
-        ports:
-            - 80:80
-            - 443:443
-        volumes:
-            - ./utils/nginx/nginx.conf:/etc/nginx/nginx.conf
-            - ./utils/certbot/conf:/etc/letsencrypt
-            - ./utils/certbot/www/:/var/www/certbot/
-
-    certbot:
-        container_name: certbot
-        image: certbot/certbot:v2.11.0
-        volumes:
-            - ./utils/certbot/conf/:/etc/letsencrypt/
-            - ./utils/certbot/www/:/var/www/certbot/
-        command: >
-            certonly --webroot -w /var/www/certbot --keep-until-expiring --email joshua.dierickse@gmail.com -d joshuadierickse.me --agree-tos &&
-            certonly --webroot -w /var/www/certbot --keep-until-expiring --email joshua.dierickse@gmail.com -d apache.joshuadierickse.me --agree-tos
+        labels:
+            - "traefik.enable=true" # this container can use traefik
+            - "traefik.http.routers.nextjs.rule=Host(`joshuadierickse.me`)" # subdomain
+            - "traefik.http.routers.nextjs.entrypoints=websecure" # http or https
+            - "traefik.http.routers.nextjs.tls=true" # http or https
+            - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
 
     apache:
         image: httpd:latest
         container_name: apache
         ports:
             - 8080:80
+        labels:
+            - "traefik.enable=true" # this container can use traefik
+            - "traefik.http.routers.apache.rule=Host(`apache.joshuadierickse.me`)" # subdomain
+            - "traefik.http.routers.apache.entrypoints=websecure" # http or https
+            - "traefik.http.routers.apache.tls=true" # http or https
+            - "traefik.http.routers.apache.tls.certresolver=myresolver"
 
 volumes:
     nextjs-node-modules-folder:
