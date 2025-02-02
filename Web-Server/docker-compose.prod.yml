@@ -1,17 +1,20 @@
 name: personal-website-production
 
 services:
+    # =============================================
+    # Personal Website
+    # =============================================
     traefik:
-        image: "traefik:v3.3"
-        container_name: "traefik"
+        container_name: traefik
+        image: traefik:v3.3
         restart: always
         ports:
-            - "80:80"
-            - "443:443"
+            - 80:80
+            - 443:443
         volumes:
-            - "./utils/traefik/traefik.yml:/etc/traefik/traefik.yml:ro"
-            - "./utils/letsencrypt:/letsencrypt"
-            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - ./utils/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+            - ./utils/letsencrypt:/letsencrypt
+            - /var/run/docker.sock:/var/run/docker.sock:ro
 
     nextjs:
         container_name: nextjs
@@ -20,23 +23,102 @@ services:
         environment:
             NODE_ENV: production
         labels:
-            - "traefik.enable=true" # this container can use traefik
-            - "traefik.http.routers.nextjs.rule=Host(`joshuadierickse.me`)" # subdomain
-            - "traefik.http.routers.nextjs.entrypoints=websecure" # http or https
-            - "traefik.http.routers.nextjs.tls=true" # http or https
+            - "traefik.enable=true"
+            - "traefik.http.routers.nextjs.rule=Host(`joshuadierickse.me`)"
+            - "traefik.http.routers.nextjs.entrypoints=websecure"
+            - "traefik.http.routers.nextjs.tls=true"
             - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
 
-    nginx:
-        container_name: nginx
-        image: nginx:latest
-        restart: always
+    # =============================================
+    # Authentik
+    # =============================================
+    postgresql:
+        container_name: authentik-postgresql
+        image: docker.io/library/postgres:16-alpine
+        restart: unless-stopped
+        volumes:
+            - authentik-postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: ${AUTHENTIK_POSTGRES_PASSWORD}
+            POSTGRES_USER: ${AUTHENTIK_POSTGRES_USER}
+            POSTGRES_DB: ${AUTHENTIK_POSTGRES_DB}
+        ports:
+            - 5432:5432
+
+    redis:
+        container_name: authentik-redis
+        image: docker.io/library/redis:alpine
+        command: --save 60 1 --loglevel warning
+        restart: unless-stopped
+        volumes:
+            - authentik-redis:/data
+        ports:
+            - 6379:6379
+
+    server:
+        container_name: authentik-server
+        image: ghcr.io/goauthentik/server:2024.12.2
+        restart: unless-stopped
+        command: server
+        environment:
+            AUTHENTIK_REDIS__HOST: redis
+            AUTHENTIK_POSTGRESQL__HOST: postgresql
+            AUTHENTIK_POSTGRESQL__USER: ${AUTHENTIK_POSTGRES_USER}
+            AUTHENTIK_POSTGRESQL__NAME: ${AUTHENTIK_POSTGRES_DB}
+            AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_POSTGRES_PASSWORD}
+        volumes:
+            - ./utils/authentik/media:/media
+            - ./utils/authentik/custom-templates:/templates
+        env_file:
+            - .env.authentik
+        ports:
+            - 9000:9000
+            - 9443:9443
+        depends_on:
+            - postgresql
+            - redis
         labels:
-        - "traefik.enable=true" # Enable Traefik for this container
-        - "traefik.http.routers.nginx.rule=Host(`grafana.joshuadierickse.me`)" # subdomain for Apache
-        - "traefik.http.routers.nginx.entrypoints=websecure" # use https
-        - "traefik.http.routers.nginx.tls=true"  # Enable TLS for Apache
-        - "traefik.http.routers.nginx.tls.certresolver=myresolver" # Use the same cert resolver as Next.js
+            - "traefik.enable=true"
+            - "traefik.http.routers.authentik.rule=Host(`authentik.joshuadierickse.me`)"
+            - "traefik.http.routers.authentik.entrypoints=websecure"
+            - "traefik.http.routers.authentik.tls=true"
+            - "traefik.http.routers.authentik.tls.certresolver=myresolver"
+            - "traefik.http.routers.authentik.service=authentik-server"
+            - "traefik.http.services.authentik-server.loadBalancer.server.port=9000"
+
+    worker:
+        container_name: authentik-worker
+        image: ghcr.io/goauthentik/server:2024.12.2
+        restart: unless-stopped
+        command: worker
+        environment:
+            AUTHENTIK_REDIS__HOST: redis
+            AUTHENTIK_POSTGRESQL__HOST: postgresql
+            AUTHENTIK_POSTGRESQL__USER: ${AUTHENTIK_POSTGRES_USER}
+            AUTHENTIK_POSTGRESQL__NAME: ${AUTHENTIK_POSTGRES_DB}
+            AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_POSTGRES_PASSWORD}
+            AUTHENTIK_ADMIN_PASSWORD: ${AUTHENTIK_ADMIN_PASSWORD}
+        # `user: root` and the docker socket volume are optional.
+        # See more for the docker socket integration here:
+        # https://goauthentik.io/docs/outposts/integrations/docker
+        # Removing `user: root` also prevents the worker from fixing the permissions
+        # on the mounted folders, so when removing this make sure the folders have the correct UID/GID
+        # (1000:1000 by default)
+        user: root
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./media:/media
+            - ./certs:/certs
+            - ./custom-templates:/templates
+        env_file:
+            - .env.authentik
+        depends_on:
+            - postgresql
+            - redis
+
 
 volumes:
     nextjs-node-modules-folder:
     nextjs-next-folder:
+    authentik-postgres:
+    authentik-redis:
