@@ -177,7 +177,7 @@ services:
 
     cadvisor:
         container_name: cadvisor
-        image: gcr.io/google-containers/cadvisor
+        image: gcr.io/cadvisor/cadvisor
         restart: unless-stopped
         ports:
             - 9250:9250
@@ -186,7 +186,7 @@ services:
             - /:/rootfs:ro
             - /var/run:/var/run:ro
             - /sys:/sys:ro
-            - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro
+            - /var/snap/docker/common/var-lib-docker:/var/lib/docker:ro
             - /dev/disk/:/dev/disk:ro
         devices:
             - /dev/kmsg
