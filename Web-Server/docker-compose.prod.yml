@@ -135,6 +135,89 @@ services:
             - "traefik.http.routers.portainer.service=portainer"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
+    # =============================================
+    # Observability
+    # =============================================
+    grafana:
+        container_name: grafana
+        image: grafana/grafana
+        restart: unless-stopped
+        volumes:
+            - ./utils/grafana/provisioning:/etc/grafana/provisioning
+            - grafana:/var/lib/grafana
+        env_file:
+            - .env.grafana
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.grafana.rule=Host(`grafana.joshuadierickse.me`)"
+            - "traefik.http.routers.grafana.entrypoints=websecure"
+            - "traefik.http.routers.grafana.tls=true"
+            - "traefik.http.routers.grafana.tls.certresolver=myresolver"
+            - "traefik.http.routers.grafana.service=grafana"
+            - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+
+
+    prometheus:
+        container_name: prometheus
+        image: prom/prometheus
+        restart: unless-stopped
+        ports:
+            - 9090:9090
+        volumes:
+            - ./utils/prometheus:/etc/prometheus
+            - prometheus:/prometheus
+        command:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+            - "--storage.tsdb.retention.time=90d"
+            - "--storage.tsdb.retention.size=10GB"
+            - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+            - "--web.console.templates=/usr/share/proemtheus/consoles"
+            - "--web.enable-admin-api"
+
+    cadvisor:
+        container_name: cadvisor
+        image: gcr.io/google-containers/cadvisor
+        restart: unless-stopped
+        ports:
+            - 9250:9250
+        privileged: true
+        volumes:
+            - /:/rootfs:ro
+            - /var/run:/var/run:ro
+            - /sys:/sys:ro
+            - /var/lib/docker/:/var/lib/docker:ro
+            - /dev/disk/:/dev/disk:ro
+        devices:
+            - /dev/kmsg
+        command:
+            - "-port=9250"
+
+    node-exporter:
+        container_name: node-exporter
+        image: prom/node-exporter
+        restart: unless-stopped
+        ports:
+            - 9100:9100
+        pid: host
+        volumes:
+            - /proc:/host/proc:ro
+            - /sys:/host/sys:ro
+            - /:/rootfs:ro
+        command:
+            - "--path.procfs=/host/proc"
+            - "--path.rootfs=/rootfs"
+            - "--path.sysfs=/host/sys"
+            - "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)"
+
+    smartctl:
+        container_name: smartctl
+        image: matusnovak/prometheus-smartctl
+        ports:
+            - 9902:9902
+        restart: unless-stopped
+        privileged: true
+
 
 volumes:
     nextjs-node-modules-folder:
@@ -142,3 +225,5 @@ volumes:
     authentik-postgres:
     authentik-redis:
     portainer-data:
+    grafana:
+    prometheus:
