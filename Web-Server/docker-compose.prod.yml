@@ -116,8 +116,26 @@ services:
             - redis
 
 
+    portainer:
+        container_name: portainer
+        image: portainer/portainer-ce:2.0.0
+        command: -H unix:///var/run/docker.sock
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - portainer-data:/data
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.portainer.rule=Host(`portainer.joshuadierickse.com`)"
+            - "traefik.http.routers.portainer.entrypoints=websecure"
+            - "traefik.http.routers.portainer.tls.certresolver=myresolver"
+            - "traefik.http.routers.portainer.service=portainer"
+            - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+
+
 volumes:
     nextjs-node-modules-folder:
     nextjs-next-folder:
     authentik-postgres:
     authentik-redis:
+    portainer-data:
