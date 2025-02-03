@@ -115,7 +115,9 @@ services:
             - postgresql
             - redis
 
-
+    # =============================================
+    # Portainer
+    # =============================================
     portainer:
         container_name: portainer
         image: portainer/portainer-ce:2.0.0
@@ -128,7 +130,7 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.portainer.rule=Host(`portainer.joshuadierickse.me`)"
             - "traefik.http.routers.portainer.entrypoints=websecure"
-            - "traefik.http.routers.authentik.tls=true"
+            - "traefik.http.routers.portainer.tls=true"
             - "traefik.http.routers.portainer.tls.certresolver=myresolver"
             - "traefik.http.routers.portainer.service=portainer"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
