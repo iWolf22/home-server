@@ -1,5 +1,13 @@
 name: personal-website-production
 
+x-logging:
+    &default-logging
+    driver: "json-file"
+    options:
+        max-size: "1m"
+        max-file: "1"
+        tag: "{{.Name}}"
+
 services:
     # =============================================
     # Personal Website
@@ -15,6 +23,7 @@ services:
             - ./utils/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
             - ./utils/letsencrypt:/letsencrypt
             - /var/run/docker.sock:/var/run/docker.sock:ro
+        logging: *default-logging
 
     nextjs:
         container_name: nextjs
@@ -28,6 +37,7 @@ services:
             - "traefik.http.routers.nextjs.entrypoints=websecure"
             - "traefik.http.routers.nextjs.tls=true"
             - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
+        logging: *default-logging
 
     # =============================================
     # Authentik
@@ -44,6 +54,8 @@ services:
             POSTGRES_DB: ${AUTHENTIK_POSTGRES_DB}
         ports:
             - 5432:5432
+        logging: *default-logging
+
 
     redis:
         container_name: authentik-redis
@@ -54,6 +66,8 @@ services:
             - authentik-redis:/data
         ports:
             - 6379:6379
+        logging: *default-logging
+
 
     server:
         container_name: authentik-server
@@ -85,6 +99,8 @@ services:
             - "traefik.http.routers.authentik.tls.certresolver=myresolver"
             - "traefik.http.routers.authentik.service=authentik-server"
             - "traefik.http.services.authentik-server.loadBalancer.server.port=9000"
+        logging: *default-logging
+
 
     worker:
         container_name: authentik-worker
@@ -114,6 +130,7 @@ services:
         depends_on:
             - postgresql
             - redis
+        logging: *default-logging
 
     # =============================================
     # Portainer
@@ -134,6 +151,7 @@ services:
             - "traefik.http.routers.portainer.tls.certresolver=myresolver"
             - "traefik.http.routers.portainer.service=portainer"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+        logging: *default-logging
 
     # =============================================
     # Observability
@@ -155,7 +173,7 @@ services:
             - "traefik.http.routers.grafana.tls.certresolver=myresolver"
             - "traefik.http.routers.grafana.service=grafana"
             - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-
+        logging: *default-logging
 
     prometheus:
         container_name: prometheus
@@ -174,6 +192,7 @@ services:
             - "--web.console.libraries=/usr/share/prometheus/console_libraries"
             - "--web.console.templates=/usr/share/proemtheus/consoles"
             - "--web.enable-admin-api"
+        logging: *default-logging
 
     cadvisor:
         container_name: cadvisor
@@ -192,6 +211,7 @@ services:
             - /dev/kmsg
         command:
             - "-port=9250"
+        logging: *default-logging
 
     node-exporter:
         container_name: node-exporter
@@ -209,6 +229,7 @@ services:
             - "--path.rootfs=/rootfs"
             - "--path.sysfs=/host/sys"
             - "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)"
+        logging: *default-logging
 
     smartctl:
         container_name: smartctl
@@ -217,20 +238,27 @@ services:
             - 9902:9902
         restart: unless-stopped
         privileged: true
+        logging: *default-logging
 
     loki:
-        image: grafana/loki:latest
+        container_name: loki
+        image: grafana/loki:3.0.0
         ports:
-        - "3100:3100"
+            - "3100:3100"
         command: -config.file=/etc/loki/local-config.yaml
+        volumes:
+            - ./utils/loki/loki.yaml:/etc/loki/loki.yaml
+        logging: *default-logging
 
     promtail:
-        image: grafana/promtail:latest
+        container_name: promtail
+        image: grafana/promtail:3.0.0
         volumes:
-        - /var/log:/var/log
+            - ./utils/promtail/promtail.yaml:/etc/promtail/docker-config.yaml
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock
         command: -config.file=/etc/promtail/config.yml
-
-
+        logging: *default-logging
 
 volumes:
     nextjs-node-modules-folder:
