@@ -7,6 +7,7 @@ datasources:
     orgId: 1
     url: http://prometheus:9090
     basicAuth: false
+    isDefault: true
     editable: true
   - name: Loki
     type: loki
@@ -16,4 +17,3 @@ datasources:
     basicAuth: false
     version: 1
     editable: false
-    isDefault: true

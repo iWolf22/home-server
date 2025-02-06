@@ -5,7 +5,7 @@ server:
   grpc_listen_port: 9096
 
 common:
-  instance_addr: loki
+  instance_addr: loki:3100
   path_prefix: /tmp/loki
   storage:
     filesystem:
