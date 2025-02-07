@@ -11,6 +11,14 @@ clients:
   - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
+  - job_name: 'system_logs'
+    static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: system-logs
+        __path__: /var/log/*.log
+
   - job_name: flog_scrape
     docker_sd_configs:
       - host: unix:///var/run/docker.sock
