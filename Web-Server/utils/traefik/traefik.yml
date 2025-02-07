@@ -2,6 +2,12 @@ api:
   insecure: false
   dashboard: false
 
+log:
+  level: DEBUG
+
+accessLog:
+  format: "common"
+
 providers:
   docker:
     exposedByDefault: false
