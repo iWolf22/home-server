@@ -160,7 +160,7 @@ services:
     # =============================================
     grafana:
         container_name: grafana
-        image: grafana/grafana
+        image: grafana/grafana:11
         restart: unless-stopped
         volumes:
             - ./utils/grafana/provisioning:/etc/grafana/provisioning
@@ -270,12 +270,12 @@ services:
             - ./utils/promtail/promtail.yaml:/etc/promtail/docker-config.yaml
             - /var/snap/docker/common/var-lib-docker/containers:/var/lib/docker/containers:ro
             - /var/run/docker.sock:/var/run/docker.sock
-        command: -config.file=/etc/promtail/config.yml
+        command: -config.file=/etc/promtail/docker-config.yaml
         depends_on:
             - loki
         labels:
-            - "logging=promtail"
-            - "logging_jobname=containerlogs"
+            logging: "promtail"
+            logging_jobname: "containerlogs"
 
 volumes:
     nextjs-node-modules-folder:
