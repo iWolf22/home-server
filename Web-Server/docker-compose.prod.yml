@@ -160,7 +160,7 @@ services:
     # =============================================
     grafana:
         container_name: grafana
-        image: grafana/grafana:11
+        image: grafana/grafana
         restart: unless-stopped
         volumes:
             - ./utils/grafana/provisioning:/etc/grafana/provisioning
