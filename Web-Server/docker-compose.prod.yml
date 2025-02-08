@@ -286,7 +286,8 @@ services:
             MEMORY: 2G
             WHITELIST: ${MINECRAFT_WHITELIST}
             OPS: ${MINECRAFT_OPS}
-            MOTD: "Dockerized Paper Minecraft Server on a Home Lab"
+            MOTD: "Test"
+            ICON: "https://cdna.artstation.com/p/assets/images/images/010/412/374/large/victycoon-art-logo-m-p262.jpg?1524275330"
         ports:
             - 25565:25565
         volumes:
