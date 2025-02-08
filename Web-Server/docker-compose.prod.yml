@@ -277,6 +277,23 @@ services:
             logging: "promtail"
             logging_jobname: "containerlogs"
 
+    minecraft:
+        image: itzg/minecraft-server
+        container_name: paper
+        environment:
+            EULA: "true"
+            TYPE: PAPER
+            MEMORY: 2G
+            WHITELIST: ${MINECRAFT_WHITELIST}
+            OPS: ${MINECRAFT_OPS}
+            MOTD: "Dockerized Paper Minecraft Server on a Home Lab"
+        ports:
+            - 25565:25565
+        volumes:
+            - /home/joshua/minecraft:/data
+        restart: unless-stopped
+
+
 volumes:
     nextjs-node-modules-folder:
     nextjs-next-folder:
