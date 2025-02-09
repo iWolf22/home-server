@@ -319,7 +319,7 @@ services:
             MYSQL_USER: ${MYSQL_USER}
 
     nextcloud:
-        image: nextcloud
+        image: nextcloud:30.0.5
         container_name: nextcloud
         restart: unless-stopped
         links:
