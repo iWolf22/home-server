@@ -333,10 +333,10 @@ services:
             MYSQL_USER: ${MYSQL_USER}
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.nextjs.rule=Host(`nextcloud.joshuadierickse.me`)"
-            - "traefik.http.routers.nextjs.entrypoints=websecure"
-            - "traefik.http.routers.nextjs.tls=true"
-            - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
+            - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.joshuadierickse.me`)"
+            - "traefik.http.routers.nextcloud.entrypoints=websecure"
+            - "traefik.http.routers.nextcloud.tls=true"
+            - "traefik.http.routers.nextcloud.tls.certresolver=myresolver"
             - "logging=promtail"
             - "logging_jobname=containerlogs"
 
