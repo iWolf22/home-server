@@ -7,7 +7,7 @@ services:
     traefik:
         container_name: traefik
         image: traefik:v3.3
-        restart: always
+        restart: unless-stopped
         ports:
             - 80:80
             - 443:443
@@ -22,7 +22,7 @@ services:
     nextjs:
         container_name: nextjs
         image: iwolf22/personal-website:latest
-        restart: always
+        restart: unless-stopped
         environment:
             NODE_ENV: production
         labels:
@@ -139,8 +139,8 @@ services:
     portainer:
         container_name: portainer
         image: portainer/portainer-ce:2.26.1
+        restart: unless-stopped
         command: -H unix:///var/run/docker.sock
-        restart: always
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - portainer-data:/data
@@ -243,9 +243,9 @@ services:
     smartctl:
         container_name: smartctl
         image: matusnovak/prometheus-smartctl
+        restart: unless-stopped
         ports:
             - 9902:9902
-        restart: unless-stopped
         privileged: true
         labels:
             - "logging=promtail"
@@ -254,6 +254,7 @@ services:
     loki:
         container_name: loki
         image: grafana/loki:3.0.0
+        restart: unless-stopped
         ports:
             - 3100:3100
         command: -config.file=/etc/loki/local-config.yaml
@@ -266,6 +267,7 @@ services:
     promtail:
         container_name: promtail
         image: grafana/promtail:3.0.0
+        restart: unless-stopped
         volumes:
             - ./utils/promtail/promtail.yaml:/etc/promtail/docker-config.yaml
             - /var/snap/docker/common/var-lib-docker/containers:/var/lib/docker/containers:ro
@@ -283,6 +285,7 @@ services:
     minecraft:
         image: itzg/minecraft-server
         container_name: minecraft
+        restart: unless-stopped
         environment:
             EULA: "true"
             TYPE: PAPER
@@ -295,7 +298,9 @@ services:
             - 25565:25565
         volumes:
             - /home/joshua/minecraft:/data
-        restart: unless-stopped
+        labels:
+            logging: "promtail"
+            logging_jobname: "containerlogs"
 
     # =============================================
     # Nextcloud
@@ -303,7 +308,7 @@ services:
     mariadb:
         image: mariadb:10.6
         container_name: mariadb
-        restart: always
+        restart: unless-stopped
         command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
         volumes:
             - nextcloud-mariadb:/var/lib/mysql
@@ -316,11 +321,9 @@ services:
     nextcloud:
         image: nextcloud
         container_name: nextcloud
-        restart: always
-        ports:
-            - 8080:80
+        restart: unless-stopped
         links:
-            - db
+            - mariadb
         volumes:
             - nextcloud:/var/www/html
         environment:
@@ -328,6 +331,14 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_USER: ${MYSQL_USER}
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nextjs.rule=Host(`nextcloud.joshuadierickse.me`)"
+            - "traefik.http.routers.nextjs.entrypoints=websecure"
+            - "traefik.http.routers.nextjs.tls=true"
+            - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
+            - "logging=promtail"
+            - "logging_jobname=containerlogs"
 
 
 volumes:
