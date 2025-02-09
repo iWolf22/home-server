@@ -318,27 +318,27 @@ services:
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_USER: ${MYSQL_USER}
 
-    nextcloud:
-        image: nextcloud:30.0.5
-        container_name: nextcloud
-        restart: unless-stopped
-        links:
-            - mariadb
-        volumes:
-            - nextcloud:/var/www/html
-        environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.joshuadierickse.me`)"
-            - "traefik.http.routers.nextcloud.entrypoints=websecure"
-            - "traefik.http.routers.nextcloud.tls=true"
-            - "traefik.http.routers.nextcloud.tls.certresolver=myresolver"
-            - "logging=promtail"
-            - "logging_jobname=containerlogs"
+    # nextcloud:
+    #     image: nextcloud:30.0.5
+    #     container_name: nextcloud
+    #     restart: unless-stopped
+    #     links:
+    #         - mariadb
+    #     volumes:
+    #         - nextcloud:/var/www/html
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    #         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    #         MYSQL_DATABASE: ${MYSQL_DATABASE}
+    #         MYSQL_USER: ${MYSQL_USER}
+    #     labels:
+    #         - "traefik.enable=true"
+    #         - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.joshuadierickse.me`)"
+    #         - "traefik.http.routers.nextcloud.entrypoints=websecure"
+    #         - "traefik.http.routers.nextcloud.tls=true"
+    #         - "traefik.http.routers.nextcloud.tls.certresolver=myresolver"
+    #         - "logging=promtail"
+    #         - "logging_jobname=containerlogs"
 
 
 volumes:
