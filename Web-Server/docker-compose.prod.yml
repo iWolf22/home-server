@@ -277,6 +277,9 @@ services:
             logging: "promtail"
             logging_jobname: "containerlogs"
 
+    # =============================================
+    # Minecraft
+    # =============================================
     minecraft:
         image: itzg/minecraft-server
         container_name: minecraft
@@ -294,6 +297,38 @@ services:
             - /home/joshua/minecraft:/data
         restart: unless-stopped
 
+    # =============================================
+    # Nextcloud
+    # =============================================
+    mariadb:
+        image: mariadb:10.6
+        container_name: mariadb
+        restart: always
+        command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+        volumes:
+            - nextcloud-mariadb:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+
+    nextcloud:
+        image: nextcloud
+        container_name: nextcloud
+        restart: always
+        ports:
+            - 8080:80
+        links:
+            - db
+        volumes:
+            - nextcloud:/var/www/html
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+
 
 volumes:
     nextjs-node-modules-folder:
@@ -303,3 +338,5 @@ volumes:
     portainer-data:
     grafana:
     prometheus:
+    nextcloud:
+    nextcloud-mariadb:
