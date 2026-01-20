@@ -47,18 +47,82 @@ const techImages = [
 
 const workList = [
     {
+        company: "Meta",
+        description: (
+            <div>
+                <p>
+                    • Incoming for Summer 2026
+                </p>
+            </div>
+        ),
+        image: "meta.jpg",
+        location: "Menlo Park, ON",
+        role: "Production Engineer",
+        time: "Incoming",
+    },
+    {
+        company: "Shopify",
+        description: (
+            <div>
+                <p>
+                    • Engineered a multi-threaded <b>Bigtable</b> connection
+                    keep-alive script, decreasing latency spikes by <b>95%</b>.
+                </p>
+                <p>
+                    • Built a fault-tolerant <b>Kubernetes</b> cron-job that
+                    fetches & stores data in <b>memcached</b>, decreasing lookup
+                    times by <b>80%</b>.
+                </p>
+                <p>
+                    • Developed a new Account Suspension flow, improving user
+                    experience for <b>thousands</b> of Shopify merchants,
+                    implemented a <b>React</b> frontend that interfaced with a
+                    scalable <b>Ruby on Rails</b> backend through <b>GraphQL</b>.
+                </p>
+                <p>
+                    • Collaborated with product managers, designers, and backend
+                    engineers to develop and launch features.
+                </p>
+            </div>
+        ),
+        image: "shopify.png",
+        location: "Toronto, ON",
+        role: "Software Engineer",
+        time: "09/2025 - 12/2025",
+    },
+    {
         company: "theScore",
         description: (
             <div>
                 <p>
-                    • Currently working at theScore for the Winter 2025 co-op
-                    term.
+                    • Migrated <b>350M</b> records between <b>PostgreSQL</b>{" "}
+                    databases via a <b>Kafka</b> powered fault-tolerant data
+                    pipeline; monitoring the health and progress of the migration
+                    with <b>Datadog</b> and <b>ArgoCD</b>.
+                </p>
+                <p>
+                    • Cut a <b>CircleCI</b> pipeline&apos;s runtime by <b>40%</b>{" "}
+                    with job parallelization and Docker image caching.
+                </p>
+                <p>
+                    • Expanded <b>GraphQL</b> endpoints in a <b>Phoenix</b>{" "}
+                    backend and synced the values with other microservices using{" "}
+                    <b>gRPC</b>.
+                </p>
+                <p>
+                    • Automated cleanup of <b>200K</b> user records using an{" "}
+                    <b>Elixir</b> script executed in a <b>Kubernetes</b> cluster.
+                </p>
+                <p>
+                    • Led development of a <b>React</b>-based internal tool that
+                    auto-generated HTML email templates, saving <b>150+</b> dev
+                    hours.
                 </p>
             </div>
         ),
         image: "theScore.png",
         location: "Toronto, ON",
-        role: "Software Developer",
+        role: "Software Engineer",
         time: "01/2025 - Present",
     },
     {
@@ -146,50 +210,6 @@ const workList = [
         location: "Waterloo, ON",
         role: "Software Intern",
         time: "08/2023",
-    },
-    {
-        company: "HomeworkHub Tutoring",
-        description: (
-            <div>
-                <p>
-                    • Taught a series of lectures regarding the fundamentals of{" "}
-                    <b>Python</b> to students from grades 4 to 8 over a virtual
-                    setting.
-                </p>
-                <p>
-                    • Delivered comprehensive PowerPoint lessons as well as
-                    developed in-class and take-home assignments to{" "}
-                    <b>solidify student understanding</b>.
-                </p>
-            </div>
-        ),
-        image: "homeworkhub.png",
-        location: "Waterloo, ON",
-        role: "Python Programming Instructor",
-        time: "06/2023 - 08/2023",
-    },
-    {
-        company: "Waterloo Collegiate Institute Robotics Club",
-        description: (
-            <div>
-                <p>
-                    • Led weekly lessons, teaching students how to build{" "}
-                    <b>Arduino circuits</b> with various components such as{" "}
-                    <b>LCD displays, ultrasonic sensors, piezo speakers</b>,
-                    etc, and then taught students how to code their creations
-                    with <b>C++</b>.
-                </p>
-                <p>
-                    • Instructed club attendees through various mediums
-                    including PowerPoints, hands-on circuits, and virtual
-                    simulations.
-                </p>
-            </div>
-        ),
-        image: "wci.png",
-        location: "Waterloo, ON",
-        role: "Club Executive",
-        time: "09/2022 - 06/2023",
     },
 ];
 
